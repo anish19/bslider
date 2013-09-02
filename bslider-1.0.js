@@ -6,13 +6,11 @@
             }
         });
 
-        function konstructor() { 
+        function Klass() { 
             this.constructor = child; 
         } 
-        konstructor.prototype = parent.prototype; 
-        child.prototype = new konstructor(); 
-        child.__super__ = parent.prototype; 
-        return child; 
+        Klass.prototype = parent.prototype; 
+        child.prototype = new Klass(); 
     };
 
     if (typeof Backbone === "undefined" || Backbone === null) {
