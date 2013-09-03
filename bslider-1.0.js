@@ -94,20 +94,20 @@
             __reference.$el.append(navContainerRight.append(__reference.navRight));
 
             if (__reference.enableCrossLinks) {
-                __reference.createCrossLinks();
+                createCrossLinks();
             }
 
             if (__reference.initialViewToBeRendered) {
-                __reference.renderViewAt(__reference.initialViewToBeRendered);
+                renderViewAt(__reference.initialViewToBeRendered);
             } else {
-                __reference.renderFirstView();
+                renderFirstView();
             }
 
 
             return __reference;
         };
 
-        Slider.prototype.createCrossLinks = function () {
+        function createCrossLinks () {
             var crossLinkCount = 0;
             __reference.crossLinksContainer = $('<div />').addClass('cross-links');
             __reference.$el.append(__reference.crossLinksContainer),
@@ -129,7 +129,7 @@
 
             __reference.$('.cross-link').on('click', __reference.navigateTo);
 
-        };
+        }
         
         Slider.prototype.navigateTo = function(e) {
             var viewId = e.currentTarget.id,
@@ -137,7 +137,7 @@
 
 
             if (typeof viewToRender !== 'undefined') {
-                var viewToRemove = __reference.getCurrentView();
+                var viewToRemove = getCurrentView();
 
                 //Animate like nav left
                 if (__reference.views.indexOf(viewToRender) < __reference.views.indexOf(viewToRemove)) {
@@ -158,14 +158,14 @@
             $(oldView.$el).remove();
             __reference.currentView = _.indexOf(__reference.views, newView);
             $(newView.$el).show('slide', {direction: slideDirection}, 300, function () {
-                __reference.currentIndex = _.indexOf(__reference.views, __reference.getCurrentView());
-                __reference.updateCrossLinks();
+                __reference.currentIndex = _.indexOf(__reference.views, getCurrentView());
+                updateCrossLinks();
             });
         }
 
-        Slider.prototype.updateCrossLinks = function () {
+        function updateCrossLinks() {
             if (__reference.enableCrossLinks) {
-                var currentCrossLink = __reference.crossLinks[_.indexOf(__reference.views, __reference.getCurrentView())];
+                var currentCrossLink = __reference.crossLinks[_.indexOf(__reference.views, getCurrentView())];
                 _.each(__reference.crossLinks, function (link) {
                     if (link === currentCrossLink) {
                         link.addClass('selected');
@@ -176,38 +176,38 @@
                     }
                 });
             }
-        };
+        }
 
         Slider.prototype.navigateLeft = function () {
-            var viewToRender = __reference.getViewAt(--__reference.currentIndex);
+            var viewToRender = getViewAt(--__reference.currentIndex);
             if (typeof viewToRender !== 'undefined') {
-                var viewToRemove = __reference.getCurrentView();
+                var viewToRemove = getCurrentView();
                 renderNewAndRemoveOld(viewToRender, viewToRemove, 'left');
             }
         };
 
         Slider.prototype.navigateRight = function () {
-            var viewToRender = __reference.getViewAt(++__reference.currentIndex);
+            var viewToRender = getViewAt(++__reference.currentIndex);
             if (typeof viewToRender !== 'undefined') {
-                var viewToRemove = __reference.getCurrentView();
+                var viewToRemove = getCurrentView();
                 renderNewAndRemoveOld(viewToRender, viewToRemove, 'right');
             }
         };
 
-        Slider.prototype.renderViewAt = function (index) {
-            var viewToBeRendered = __reference.getViewAt(index);
+        function renderViewAt (index) {
+            var viewToBeRendered = getViewAt(index);
             if (viewToBeRendered) {
                 __reference.currentView = index;
                 __reference.sliderContainer.append(viewToBeRendered.el);
-                __reference.updateCrossLinks();
+                updateCrossLinks();
             }
-        };
+        }
 
-        Slider.prototype.getCurrentView = function () {
+        function getCurrentView() {
             return __reference.views[__reference.currentView];
-        };
+        }
 
-        Slider.prototype.getViewAt = function(index) {
+        function getViewAt (index) {
             if (!__reference.views.length || index >= __reference.views.length || index < 0) {
                 if (index >= __reference.views.length) {
                     __reference.currentIndex = __reference.views.length - 1;
@@ -221,17 +221,17 @@
 
             __reference.currentIndex = index;
             return __reference.views[index];
-        };
+        }
 
-        Slider.prototype.renderFirstView = function renderFirstView() {
+        function renderFirstView() {
             if (!__reference.views.length) {
                 throw new Error('Cannot render the slider. Need at least one view');
             }
 
             __reference.currentView = 0;
-            __reference.sliderContainer.append(__reference.getViewAt(0).el);
-            __reference.updateCrossLinks();
-        };
+            __reference.sliderContainer.append(getViewAt(0).el);
+            updateCrossLinks();
+        }
 
         return Slider;
     })(Backbone.View);
