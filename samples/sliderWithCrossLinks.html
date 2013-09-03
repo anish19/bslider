@@ -45,6 +45,7 @@
                     viewThree = new TestView({template: $('#test-template-three'), bsliderCrossLinkTitle: 'Third View'}),
                     MySlider = Backbone.Slider.extend({
                         enableCrossLinks: true,
+                        cycleThrough: true,
                         views: [viewOne, viewTwo, viewThree]
                     });
                 var slider = new MySlider();

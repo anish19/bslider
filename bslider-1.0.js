@@ -49,6 +49,7 @@
         Slider.prototype.initialize = function () {
             __reference.views = __reference.views || [];
             __reference.crossLinkTitles = __reference.crossLinkTitles || {};
+            __reference.cycleThrough = __reference.cycleThrough || false;
             if (_.some(__reference.views, function (view) {
                 return !(view instanceof Backbone.View);
             })) {
@@ -208,7 +209,7 @@
         }
 
         function getViewAt (index) {
-            if (!__reference.views.length || index >= __reference.views.length || index < 0) {
+            if (!__reference.views.length || (!__reference.cycleThrough && (index >= __reference.views.length || index < 0))) {
                 if (index >= __reference.views.length) {
                     __reference.currentIndex = __reference.views.length - 1;
                     __reference.currentView = __reference.currentIndex;
@@ -217,10 +218,18 @@
                     __reference.currentView = __reference.currentIndex;
                 }
                 return undefined;
+            } else {
+                if (index >= __reference.views.length) {
+                    __reference.currentIndex = 0;
+                } else if (index < 0){
+                    __reference.currentIndex = __reference.views.length - 1;
+                } else {
+                    __reference.currentIndex = index;
+                }
+
+                return __reference.views[__reference.currentIndex];
             }
 
-            __reference.currentIndex = index;
-            return __reference.views[index];
         }
 
         function renderFirstView() {

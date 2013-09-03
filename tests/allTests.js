@@ -188,3 +188,25 @@ test('crosslink titles can be specified as a parameter', function () {
         equal(slider.$('#bsliderCrossLink0').text().trim(), 'View One');
         equal(slider.$('#bsliderCrossLink1').text().trim(), 'View 2');
 });
+
+test('when cycleThrough is enabled, the slides can be cycled through', function () {
+    var viewOne = new Backbone.View({className: 'test-view', id: 'one'}),
+        viewTwo = new Backbone.View({className: 'test-view', id: 'two'}),
+        MySlider = Backbone.Slider.extend({
+            cycleThrough: true
+        }),
+        slider = new MySlider();
+
+        slider.addView([viewOne, viewTwo]);
+        slider.render();
+
+        slider.$('.bslider-nav-left').trigger('click'); 
+
+        equal(slider.$('#two').length, 1, 'The second view should be visible');
+        equal(slider.$('#one').length, 0, 'The first view should be visible');
+
+        slider.$('.bslider-nav-right').trigger('click'); 
+
+        equal(slider.$('#two').length, 0, 'The second view should not visible');
+        equal(slider.$('#one').length, 1, 'The first view should be visible');
+});
