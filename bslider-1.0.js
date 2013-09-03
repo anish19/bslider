@@ -57,6 +57,7 @@
             }
             __reference.currentIndex = -1;
             __reference.currentView = -1;
+            setupEventHandlers();
         };
 
         Slider.prototype.addView = function(viewsToAdd) {
@@ -71,10 +72,10 @@
             });
         };
 
-        Slider.prototype.delegateEvents = function () {
+        function setupEventHandlers () {
             __reference.$('.bslider-nav-left').on('click', __reference.navigateLeft);
             __reference.$('.bslider-nav-right').on('click', __reference.navigateRight);
-        };
+        }
 
         Slider.prototype.render = function (options) {
             var navContainerLeft = $('<div />').addClass('bslider-nav-container-left');
