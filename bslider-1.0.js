@@ -91,7 +91,6 @@
 
             __reference.$el.html(__reference.sliderContainer);
 
-            //TODO not the best way to do this. Find a better way
             __reference.$el.prepend(navContainerLeft.append(__reference.navLeft));
             __reference.$el.append(navContainerRight.append(__reference.navRight));
 
@@ -119,9 +118,6 @@
                 var crossLinkId = 'bsliderCrossLink' + crossLinkCount++,
                     crossLink = $('<div />').addClass('cross-link').attr('id', crossLinkId).addClass('unselected');
                 
-                //TODO Right now, cross link title can only be part of the backbone view. 
-                //It should actually be a part of the slider in some sort of a map
-           
                 crossLink.text(view.bsliderCrossLinkTitle ? view.bsliderCrossLinkTitle : 'View ' + crossLinkCount);
 
                 __reference.crossLinksContainer.append(crossLink);
