@@ -10,10 +10,11 @@
     cursor: pointer;
     font-size: 40px;
     text-align: center;
+    color: #F7F5F5;
 }
 
 .bslider .bslider-nav-right:hover, .bslider .bslider-nav-left:hover {
-    opacity: 0.65;
+    opacity: 0.8;
 }
 
 .bslider-nav-container-left, .bslider-nav-container-right, .bslider-container {
