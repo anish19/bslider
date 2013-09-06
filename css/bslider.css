@@ -37,6 +37,10 @@
     margin-right: 0.5em;
 }
 
+.bslider .cross-link:hover {
+    cursor: pointer;
+}
+
 .bslider .cross-link.unselected {
     border-top: 6px solid #ccc;
 }

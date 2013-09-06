@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='UTF-8' />
+        <meta http-equiv='content-type' content='text/html; charset=utf-8' />
+        <link rel="stylesheet" href="../css/bslider.css" type="text/css" />
+        <link rel="stylesheet" href="../css/demo.css" type="text/css" />
+        <link rel="stylesheet" href="../css/font-awesome/css/font-awesome.css" type="text/css" />
+
+        <title>Easy Slider</title>
+
+        <script src='../lib/jquery-1.10.2.js'></script>
+        <script src='../lib/underscore-1.5.1.js'></script>
+        <script src='../lib/backbone-1.0.0.js'></script>
+        <script src='../lib/jquery-ui-1.10.3/ui/jquery-ui.js'></script>
+        <script src='../bslider-1.0.js'></script>
+    </head>
+    <body>
+        <script type="text/template" id="test-template-one">
+            <div class="title">Who We Are</div>
+            <pre class="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus et aliquam felis, id cursus purus. Etiam sollicitudin sed metus sed bibendum. Etiam non luctus ligula. Ut commodo neque vitae varius pretium. Vestibulum ligula massa, suscipit eu lorem sed, aliquam faucibus quam. Quisque lacus eros, suscipit vitae consequat eget, lobortis in justo. Integer accumsan ipsum sit amet lorem aliquam, ac varius lacus venenatis. Ut eleifend ac purus ac pharetra. Sed a dignissim eros. Donec id ante magna. Vestibulum eget nulla vitae urna mollis volutpat. In eros neque, aliquam eget blandit in, tristique ut quam. Donec luctus, sem non pharetra malesuada, nisi odio suscipit est, vitae consectetur leo libero ut justo. Nam a imperdiet lacus. Vestibulum euismod sagittis mi a ullamcorper. Phasellus vulputate mauris faucibus, feugiat risus eu, pharetra nisl.</pre>
+        </script>
+        <script type="text/template" id="test-template-two">
+            <div class="title">What We Do</div>
+            <pre class="content">Donec ultrices hendrerit gravida. Suspendisse at interdum magna, non consequat risus. Nullam sed risus eros. Quisque mauris tellus, condimentum sed cursus eget, blandit sit amet odio. Duis consequat lacus non justo iaculis porttitor. Cras commodo vitae quam ut ullamcorper. Maecenas ut vestibulum libero, in hendrerit velit. Duis non leo imperdiet, congue libero id, aliquam libero. Etiam a tristique velit. Curabitur pretium tellus dui, ut rutrum enim tincidunt nec. Nulla sodales tempus bibendum. Cras euismod, neque a vehicula imperdiet, diam ante porta sem, et vulputate ligula nisl eu nibh. Aliquam sit amet dapibus quam. Maecenas ac tellus vel urna pretium tincidunt. Nulla eu dapibus orci.
+
+Nulla adipiscing, orci a volutpat elementum, tortor elit fermentum augue, et varius nisl dui at nunc. Etiam sollicitudin nisl ut dui dapibus, ac adipiscing metus egestas. Integer sit amet dictum lacus, vitae fermentum nibh. Aliquam ac laoreet felis. Nulla est neque, sodales eget augue vel, pretium elementum odio. Suspendisse tristique ut ipsum vitae dignissim. Ut lacinia id urna ut dapibus. Aliquam auctor velit et adipiscing consequat.</pre>
+        </script>
+        <script type="text/template" id="test-template-three">
+            <div class="title">Location</div>
+            <pre class="content">In in pretium justo. Aliquam eros sapien, sagittis a nibh eget, varius rutrum lacus. Fusce mollis ac felis non adipiscing. Donec tempus tellus nec lacus accumsan, id placerat mauris varius. Integer blandit neque vitae metus sodales volutpat. Curabitur porttitor adipiscing risus eu bibendum. Vivamus placerat diam eu imperdiet consectetur. Aenean pharetra felis eget dapibus posuere.</pre>
+        </script>
+        <script type="text/template" id="test-template-four">
+            <div class="title">Contact Us</div>
+            <pre class="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus et aliquam felis, id cursus purus. Etiam sollicitudin sed metus sed bibendum. Etiam non luctus ligula. Ut commodo neque vitae varius pretium. Vestibulum ligula massa, suscipit eu lorem sed, aliquam faucibus quam. Quisque lacus eros, suscipit vitae consequat eget, lobortis in justo. Integer accumsan ipsum sit amet lorem aliquam, ac varius lacus venenatis. Ut eleifend ac purus ac pharetra. Sed a dignissim eros. Donec id ante magna. Vestibulum eget nulla vitae urna mollis volutpat. </pre>
+        </script>
+        <script>
+            jQuery(function ($) {
+                var TestView = Backbone.View.extend({
+                        className: 'demo-view',
+                        initialize: function (options) {
+                            if (options.bsliderCrossLinkTitle) {
+                                this.bsliderCrossLinkTitle = options.bsliderCrossLinkTitle;
+                            }
+                            this.template = _.template(options.template.html());
+                            this.render();
+                        },
+                        render: function () {
+                            this.$el.html(this.template());
+                            return this;
+                        }
+                    }),
+                    viewOne = new TestView({template: $('#test-template-one'), bsliderCrossLinkTitle: 'Who We Are'}),
+                    viewTwo = new TestView({template: $('#test-template-two'), bsliderCrossLinkTitle: 'What We Do'}),
+                    viewThree = new TestView({template: $('#test-template-three'), bsliderCrossLinkTitle: 'Location'}),
+                    viewFour = new TestView({template: $('#test-template-four'), bsliderCrossLinkTitle: 'Contact Us'}),
+                    MySlider = Backbone.Slider.extend({
+                        enableCrossLinks: true,
+                        cycleThrough: true,
+                        views: [viewOne, viewTwo, viewThree, viewFour]
+                    });
+                var slider = new MySlider();
+                $('.slider-demo').append(slider.render().el);
+            });
+        </script>
+        <div class="slider-demo"></div>
+    </body>
+</html>
