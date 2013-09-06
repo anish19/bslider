@@ -65,3 +65,23 @@ a {
     font-size: 23px;
     color: #0A7F9C;
 }
+
+.contact-me {
+    position: fixed;
+    bottom: 1.3em;
+    right: 0;
+    font-weight: 500;
+    z-index: 10000000;
+    color: #F5F5F5;
+    background: #FFFFFF;
+    width: 150px;
+    height: 2.4em;
+    text-align: center;
+    padding: 0.7em;
+}
+
+.contact-me a {
+    text-decoration: none;
+    color: #0B83A3;
+    font-size: 20px;
+}
