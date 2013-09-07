@@ -155,7 +155,7 @@
             $(newView.$el).insertAfter($(oldView.$el));
             $(oldView.$el).remove();
             __reference.currentView = _.indexOf(__reference.views, newView);
-            $(newView.$el).show('slide', {direction: slideDirection}, 300, function () {
+            $(newView.$el).show('slide', {easing: 'easeInOutQuad', direction: slideDirection}, 500, function () {
                 __reference.currentIndex = _.indexOf(__reference.views, getCurrentView());
                 updateCrossLinks();
             });
