@@ -14,8 +14,8 @@ some views while extending, create a new instance, and render the slider.
 It is pretty simple. I am open to new ideas. Set everything up (refer to the documentation for more information). 
 I have tried test driving the code. So please make sure you write tests for any new features that you add. Run them using 
 grunt, or by accessing them through the browser (/tests/index.html). Please make sure you add tests to a different file, 
-and also ensure that you create an issue for the new feature. Do a pull request. If everything works out, I will do a 
-release in under a week after you submit.
+and also ensure that you create an issue for the new feature. Do a pull request. I will do a release in under a week after 
+you submit.
 
 ##Tests
 Tests can be run using Grunt. If you wish to access the QUnit tests directly through a browser, then point your browser to 
