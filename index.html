@@ -36,7 +36,12 @@
 
 <p>A backbone based slider for backbone views. </p>
 
-<p><em>Note: This is a work in progress. It provides just the basic functionality. Please do not use in production</em></p>
+<p><em>Note: It's currently in the pre release state. Use in production at your own risk! I will have a production version ready on or before September 30th</em></p>
+
+<h4>
+<a name="demos" class="anchor" href="#demos"><span class="octicon octicon-link"></span></a>Demos</h4>
+
+<p><a href="http://bslider-demo.herokuapp.com/demo.html">Slider with crosslinks</a></p>
 
 <h1>
 <a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h1>
@@ -46,12 +51,12 @@
 <h4>
 <a name="backboneslider" class="anchor" href="#backboneslider"><span class="octicon octicon-link"></span></a>Backbone.Slider</h4>
 
-<pre><code>var MySlider = Backbone.Slider.extend({
-    views: [myBackboneViewOne, myBackboneViewTwo] 
-}); //The Views should be rendered
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">MySlider</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Slider</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+    <span class="nx">views</span><span class="o">:</span> <span class="p">[</span><span class="nx">myBackboneViewOne</span><span class="p">,</span> <span class="nx">myBackboneViewTwo</span><span class="p">]</span> 
+<span class="p">});</span> <span class="c1">//The Views should be rendered</span>
 
-var instance = new MySlider().render();
-</code></pre>
+<span class="kd">var</span> <span class="nx">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MySlider</span><span class="p">().</span><span class="nx">render</span><span class="p">();</span>
+</pre></div>
 
 <h4>
 <a name="addview--instanceaddview" class="anchor" href="#addview--instanceaddview"><span class="octicon octicon-link"></span></a>addView  <code>instance.addView</code>
@@ -66,54 +71,49 @@ var instance = new MySlider().render();
 
 <p><em>Future versions will include selecting initial views by name, id, etc.</em></p>
 
-<pre><code>var MySlider = Backbone.Slider.extend({
-    initialViewToBeRendered: 1,
-    views: [myBackboneViewOne, myBackboneViewTwo] 
-}); //Index starts at 0
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">MySlider</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Slider</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+    <span class="nx">initialViewToBeRendered</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nx">views</span><span class="o">:</span> <span class="p">[</span><span class="nx">myBackboneViewOne</span><span class="p">,</span> <span class="nx">myBackboneViewTwo</span><span class="p">]</span> 
+<span class="p">});</span> <span class="c1">//Index starts at 0</span>
 
-var instance = new MySlider().render();
-</code></pre>
+<span class="kd">var</span> <span class="nx">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MySlider</span><span class="p">().</span><span class="nx">render</span><span class="p">();</span>
+</pre></div>
 
 <h4>
 <a name="crosslinks" class="anchor" href="#crosslinks"><span class="octicon octicon-link"></span></a>Crosslinks</h4>
 
 <p>Cross-links can be enabled by passing in an option while extending.</p>
 
-<pre><code>var MySlider = Backbone.Slider.extend({
-    enableCrossLinks: true,
-    views: [myBackboneViewOne, myBackboneViewTwo] 
-}); 
-</code></pre>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">MySlider</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Slider</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+    <span class="nx">enableCrossLinks</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">views</span><span class="o">:</span> <span class="p">[</span><span class="nx">myBackboneViewOne</span><span class="p">,</span> <span class="nx">myBackboneViewTwo</span><span class="p">]</span> 
+<span class="p">});</span> 
+</pre></div>
 
 <h4>
 <a name="bslidercrosslinktitle" class="anchor" href="#bslidercrosslinktitle"><span class="octicon octicon-link"></span></a>bsliderCrossLinkTitle</h4>
 
 <p>Cross-link titles can be specified as a property of the backbone view.</p>
 
-<pre><code>var MyBackboneView = Backbone.View.extend({bsliderCrossLinkTitle: 'My View'}),
-    myBackboneViewOne = new MyBackboneView(); //View(s) should be rendered
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">MyBackboneView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span><span class="nx">bsliderCrossLinkTitle</span><span class="o">:</span> <span class="s1">'My View'</span><span class="p">}),</span>
+    <span class="nx">myBackboneViewOne</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyBackboneView</span><span class="p">();</span> <span class="c1">//View(s) should be rendered</span>
 
-var MySlider = Backbone.Slider.extend({
-    enableCrossLinks: true,
-    views: [myBackboneViewOne] 
-}); 
-</code></pre>
+<span class="kd">var</span> <span class="nx">MySlider</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Slider</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+    <span class="nx">enableCrossLinks</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">views</span><span class="o">:</span> <span class="p">[</span><span class="nx">myBackboneViewOne</span><span class="p">]</span> 
+<span class="p">});</span> 
+</pre></div>
 
 <h4>
 <a name="cyclethrough" class="anchor" href="#cyclethrough"><span class="octicon octicon-link"></span></a>cycleThrough</h4>
 
 <p>Enable this option to cycle through views. </p>
 
-<pre><code>var MySlider = Backbone.Slider.extend({
-    cycleThrough: true,
-    views: [myBackboneViewOne, myBackboneViewTwo] 
-}); 
-</code></pre>
-
-<h4>
-<a name="demos" class="anchor" href="#demos"><span class="octicon octicon-link"></span></a>Demos</h4>
-
-<p><a href="http://bslider-demo.herokuapp.com/demo.html">Slides with crosslinks</a></p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">MySlider</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Slider</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+    <span class="nx">cycleThrough</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">views</span><span class="o">:</span> <span class="p">[</span><span class="nx">myBackboneViewOne</span><span class="p">,</span> <span class="nx">myBackboneViewTwo</span><span class="p">]</span> 
+<span class="p">});</span> 
+</pre></div>
 
 <h3>
 <a name="more-features-coming-soon-stay-tuned" class="anchor" href="#more-features-coming-soon-stay-tuned"><span class="octicon octicon-link"></span></a>More features coming soon. Stay tuned!</h3>
