@@ -61,7 +61,7 @@
         };
 
         Slider.prototype.addView = function(viewsToAdd) {
-            if (!_.isArray(viewsToAdd) || viewsToAdd === null || viewsToAdd === 'undefined') {
+            if (!_.isArray(viewsToAdd) || !exists(viewsToAdd)) {
                 throw new Error('Error adding views ' + views);
             }
             _.each(viewsToAdd, function (view) {
@@ -81,7 +81,7 @@
             var navContainerLeft = $('<div />').addClass('bslider-nav-container-left');
                 navContainerRight = $('<div />').addClass('bslider-nav-container-right');
 
-            if (options === null) {
+            if (!exists(options)) {
                 options = {};
             }
 
@@ -134,7 +134,7 @@
                 viewToRender = _.result(__reference.viewCrossLinkMap, viewId);
 
 
-            if (typeof viewToRender !== 'undefined') {
+            if (exists(viewToRender)) {
                 var viewToRemove = getCurrentView();
 
                 //Animate like nav left
@@ -166,11 +166,9 @@
                 var currentCrossLink = __reference.crossLinks[_.indexOf(__reference.views, getCurrentView())];
                 _.each(__reference.crossLinks, function (link) {
                     if (link === currentCrossLink) {
-                        link.addClass('selected');
-                        link.removeClass('unselected');
+                        link.addClass('selected').removeClass('unselected');
                     } else {
-                        link.addClass('unselected');
-                        link.removeClass('selected');
+                        link.addClass('unselected').removeClass('selected');
                     }
                 });
             }
@@ -178,7 +176,7 @@
 
         Slider.prototype.navigateLeft = function () {
             var viewToRender = getViewAt(--__reference.currentIndex);
-            if (typeof viewToRender !== 'undefined') {
+            if (exists(viewToRender)) {
                 var viewToRemove = getCurrentView();
                 renderNewAndRemoveOld(viewToRender, viewToRemove, 'left');
             }
@@ -186,7 +184,7 @@
 
         Slider.prototype.navigateRight = function () {
             var viewToRender = getViewAt(++__reference.currentIndex);
-            if (typeof viewToRender !== 'undefined') {
+            if (exists(viewToRender)) {
                 var viewToRemove = getCurrentView();
                 renderNewAndRemoveOld(viewToRender, viewToRemove, 'right');
             }
@@ -237,6 +235,10 @@
             __reference.currentView = 0;
             __reference.sliderContainer.append(getViewAt(0).el);
             updateCrossLinks();
+        }
+
+        function exists(value) {
+            return value != null;
         }
 
         return Slider;
