@@ -22,8 +22,8 @@
           <h2 id="project_tagline">A simple way to create sliders for Backbone views.</h2>
 
             <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/karun012/bslider/zipball/release">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/karun012/bslider/tarball/release">Download this project as a tar.gz file</a>
+              <a class="zip_download_link" href="https://github.com/karun012/bslider/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/karun012/bslider/tarball/master">Download this project as a tar.gz file</a>
             </section>
         </header>
     </div>
@@ -112,6 +112,17 @@
 <div class="highlight"><pre><span class="kd">var</span> <span class="nx">MySlider</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Slider</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
     <span class="nx">cycleThrough</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="nx">views</span><span class="o">:</span> <span class="p">[</span><span class="nx">myBackboneViewOne</span><span class="p">,</span> <span class="nx">myBackboneViewTwo</span><span class="p">]</span> 
+<span class="p">});</span> 
+</pre></div>
+
+<h4>
+<a name="pretransition-and-posttransition" class="anchor" href="#pretransition-and-posttransition"><span class="octicon octicon-link"></span></a>preTransition and postTransition</h4>
+
+<p>If you want to control what happens before and/or after slide transitions, define preTransition, and/or postTransition functions while extending. </p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">MySlider</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Slider</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+    <span class="nx">preTransition</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="c1">//Do something },</span>
+    <span class="nx">postTransition</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="c1">//Do something }</span>
 <span class="p">});</span> 
 </pre></div>
 
