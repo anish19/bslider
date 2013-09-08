@@ -62,7 +62,7 @@
 
         Slider.prototype.addView = function(viewsToAdd) {
             if (!_.isArray(viewsToAdd) || !exists(viewsToAdd)) {
-                throw new Error('Error adding views ' + views);
+                throw new Error('Error adding views ' + viewsToAdd);
             }
             _.each(viewsToAdd, function (view) {
                 if (!(view instanceof Backbone.View)) {
