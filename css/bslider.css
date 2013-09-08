@@ -10,10 +10,11 @@
     cursor: pointer;
     font-size: 40px;
     text-align: center;
+    color: #F7F5F5;
 }
 
 .bslider .bslider-nav-right:hover, .bslider .bslider-nav-left:hover {
-    opacity: 0.65;
+    opacity: 0.8;
 }
 
 .bslider-nav-container-left, .bslider-nav-container-right, .bslider-container {
@@ -36,6 +37,10 @@
     margin-right: 0.5em;
 }
 
+.bslider .cross-link:hover {
+    cursor: pointer;
+}
+
 .bslider .cross-link.unselected {
     border-top: 6px solid #ccc;
 }
@@ -49,9 +54,3 @@
 }
 
 
-/* Demo css */
-.test-view {
-    width: 500px;
-    height: 400px;
-    border: 1px solid #ccc;
-}

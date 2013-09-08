@@ -3,7 +3,8 @@
     <head>
         <meta charset='UTF-8' />
         <meta http-equiv='content-type' content='text/html; charset=utf-8' />
-        <link rel="stylesheet" href="../css/backslider.css" type="text/css" />
+        <link rel="stylesheet" href="../css/bslider.css" type="text/css" />
+        <link rel="stylesheet" href="../css/demo.css" type="text/css" />
         <link rel="stylesheet" href="../css/font-awesome/css/font-awesome.css" type="text/css" />
 
         <title>Easy Slider</title>
@@ -12,7 +13,7 @@
         <script src='../lib/underscore-1.5.1.js'></script>
         <script src='../lib/backbone-1.0.0.js'></script>
         <script src='../lib/jquery-ui-1.10.3/ui/jquery-ui.js'></script>
-        <script src='../bslider-1.0-snapshot.js'></script>
+        <script src='../bslider-1.0.js'></script>
     </head>
     <body>
         <script type="text/template" id="test-template-one">
@@ -45,6 +46,7 @@
                     viewThree = new TestView({template: $('#test-template-three'), bsliderCrossLinkTitle: 'Third View'}),
                     MySlider = Backbone.Slider.extend({
                         enableCrossLinks: true,
+                        cycleThrough: true,
                         views: [viewOne, viewTwo, viewThree]
                     });
                 var slider = new MySlider();
