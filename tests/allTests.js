@@ -210,3 +210,32 @@ test('when cycleThrough is enabled, the slides can be cycled through', function 
         equal(slider.$('#two').length, 0, 'The second view should not visible');
         equal(slider.$('#one').length, 1, 'The first view should be visible');
 });
+
+test('if pre or post transition functions have been provided, execute them', function () {
+    var viewOne = new Backbone.View({className: 'test-view', id: 'one'}),
+        viewTwo = new Backbone.View({className: 'test-view', id: 'two'}),
+        preTransitionStub = sinon.stub(),
+        postTransitionStub = sinon.stub(),
+        leftStub = sinon.stub(),
+        rightStub = sinon.stub(),
+        MySlider = Backbone.Slider.extend({
+            preTransition: preTransitionStub,
+            postTransition: postTransitionStub,
+            navigateLeft: leftStub,
+            navigateRight: rightStub,
+            views: [viewOne, viewTwo]
+        }),
+        slider = new MySlider();
+
+        slider.render();
+
+        slider.$('.bslider-nav-right').trigger('click'); 
+
+        ok(preTransitionStub.calledBefore(rightStub));
+        ok(rightStub.calledBefore(postTransitionStub));
+
+        slider.$('.bslider-nav-left').trigger('click'); 
+        ok(preTransitionStub.calledBefore(leftStub));
+        ok(leftStub.calledBefore(postTransitionStub));
+        
+});

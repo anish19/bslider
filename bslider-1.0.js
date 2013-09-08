@@ -50,6 +50,9 @@
             __reference.views = __reference.views || [];
             __reference.crossLinkTitles = __reference.crossLinkTitles || {};
             __reference.cycleThrough = __reference.cycleThrough || false;
+            __reference.preTransition = _.isFunction(__reference.preTransition) ? __reference.preTransition : function () {};
+            __reference.postTransition = _.isFunction(__reference.postTransition) ? __reference.postTransition : function () {};
+
             if (_.some(__reference.views, function (view) {
                 return !(view instanceof Backbone.View);
             })) {
@@ -73,6 +76,17 @@
         };
 
         function setupEventHandlers () {
+            __reference.navigateLeft = _.wrap(__reference.navigateLeft, function(navLeft) {
+                navLeft(); 
+                __reference.postTransition();
+            });
+
+            __reference.navigateRight = _.wrap(__reference.navigateRight, function(navRight) {
+                __reference.preTransition(); 
+                navRight(); 
+                __reference.postTransition();
+            });
+
             __reference.$('.bslider-nav-left').on('click', __reference.navigateLeft);
             __reference.$('.bslider-nav-right').on('click', __reference.navigateRight);
         }
