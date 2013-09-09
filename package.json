@@ -1,9 +1,25 @@
 {
-  "name": "bslider",
-  "version": "1.0.0",
-  "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-qunit": ">=0.2.1",
-    "grunt-contrib-watch": ">=0.3.1"
-  }
+    "name": "bslider",
+    "version": "1.0.0",
+    "devDependencies": {
+        "grunt": "~0.4.1",
+        "grunt-contrib-qunit": ">=0.2.1",
+        "grunt-contrib-watch": ">=0.3.1"
+    },
+    "maintainers": [
+        {
+            "name": "Karun Ramakrishnan",
+            "email": "karun012@gmail.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "git",
+            "url": "http://github.com/karun012/bslider.git"
+        }
+    ],
+    "bugs": {
+        "mail": "karun012@gmail.com",
+        "web": "https://github.com/karun012/bslider/issues"
+    }
 }
