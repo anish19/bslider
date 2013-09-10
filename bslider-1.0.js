@@ -63,7 +63,7 @@
             setupEventHandlers();
         };
 
-        Slider.prototype.addView = function(viewsToAdd) {
+        Slider.prototype.addViews = function(viewsToAdd) {
             if (!_.isArray(viewsToAdd) || !exists(viewsToAdd)) {
                 throw new Error('Error adding views ' + viewsToAdd);
             }
