@@ -18,7 +18,7 @@ and also ensure that you create an issue for the new feature. Do a pull request.
 you submit.
 
 ##Tests
-Tests can be run using Grunt. If you wish to access the QUnit tests directly through a browser, then point your browser to 
+Tests can be run using Grunt (grunt test). If you wish to access the QUnit tests directly through a browser, then point your browser to 
 the index.html file under /tests. If you are adding new tests, please add them to a separate file, and include the script 
 in the existing index.html so that everything is run together. I will soon be making this an easier process. So please 
 bear with me.
