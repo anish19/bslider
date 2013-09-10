@@ -86,6 +86,7 @@
 
         function setupEventHandlers () {
             __reference.navigateLeft = _.wrap(__reference.navigateLeft, function(navLeft) {
+                __reference.preTransition(); 
                 navLeft(); 
                 __reference.postTransition();
             });

@@ -229,13 +229,14 @@ test('if pre or post transition functions have been provided, execute them', fun
 
         slider.render();
 
-        slider.$('.bslider-nav-right').trigger('click'); 
-
-        ok(preTransitionStub.calledBefore(rightStub));
-        ok(rightStub.calledBefore(postTransitionStub));
-
         slider.$('.bslider-nav-left').trigger('click'); 
         ok(preTransitionStub.calledBefore(leftStub));
         ok(leftStub.calledBefore(postTransitionStub));
-        
+
+        slider.preTransition = preTransitionStub = sinon.stub();
+        slider.postTransition = postTransitionStub = sinon.stub();
+
+        slider.$('.bslider-nav-right').trigger('click'); 
+        ok(preTransitionStub.calledBefore(rightStub));
+        ok(rightStub.calledBefore(postTransitionStub));
 });
