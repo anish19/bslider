@@ -125,8 +125,8 @@
         function createCrossLinks () {
             var crossLinkCount = 0;
             __reference.crossLinksContainer = $('<div />').addClass('cross-links');
-            __reference.$el.append(__reference.crossLinksContainer),
-            __reference.viewCrossLinkMap = {},
+            __reference.$el.append(__reference.crossLinksContainer);
+            __reference.viewCrossLinkMap = {};
             __reference.crossLinks = [];
             _.each(__reference.views, function (view) {
                 var crossLinkId = 'bsliderCrossLink' + crossLinkCount++,

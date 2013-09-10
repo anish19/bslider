@@ -15,10 +15,24 @@ module.exports = function(grunt) {
                 'release/bslider-1.0.min.js' : ['bslider-1.0.js']    
             }
         }
+    },
+    jshint: {
+        options: {
+            curly: true,
+            eqeqeq: true,
+            eqnull: true,
+            browser: true,
+            globals: {
+                jQuery: true
+            }
+        },
+        all: ['*.js']
     }
   });
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.registerTask('default', ['qunit']);
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.registerTask('test', ['jshint:all', 'qunit']);
+  grunt.registerTask('default', ['jshint:all', 'qunit', 'uglify']);
 };
