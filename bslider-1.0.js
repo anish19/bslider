@@ -53,27 +53,36 @@
             __reference.preTransition = _.isFunction(__reference.preTransition) ? __reference.preTransition : function () {};
             __reference.postTransition = _.isFunction(__reference.postTransition) ? __reference.postTransition : function () {};
 
-            if (_.some(__reference.views, function (view) {
-                return !(view instanceof Backbone.View);
-            })) {
-                throw new Error('Cannot initialize slider. Nothing other than backbone views are supported for now');
+            if (_(__reference.views).some(isNotABackboneView)) {
+                throwError('Cannot initilize slider. Nothing other than backbone views are supported for now');
             }
+
             __reference.currentIndex = -1;
             __reference.currentView = -1;
             setupEventHandlers();
         };
 
+        function isNotABackboneView(view) {
+            return !(view instanceof Backbone.View);
+        }
+
+        function throwError(message) {
+            throw new Error(message);
+        }
+
         Slider.prototype.addViews = function(viewsToAdd) {
             if (!_.isArray(viewsToAdd) || !exists(viewsToAdd)) {
-                throw new Error('Error adding views ' + viewsToAdd);
+                throwError('Error adding views ' + viewsToAdd);
             }
-            _.each(viewsToAdd, function (view) {
-                if (!(view instanceof Backbone.View)) {
-                    throw new Error('One of the added views is not a backbone view');
-                }
-                __reference.views.push(view);
-            });
+            _(viewsToAdd).each(addView);
         };
+
+        function addView (view) {
+            if (!(view instanceof Backbone.View)) {
+                throwError('One of the added views is not a backbone view');
+            }
+            __reference.views.push(view);
+        }
 
         function setupEventHandlers () {
             __reference.navigateLeft = _.wrap(__reference.navigateLeft, function(navLeft) {
@@ -123,24 +132,27 @@
         };
 
         function createCrossLinks () {
-            var crossLinkCount = 0;
+            __reference.crossLinkCount = 0;
             __reference.crossLinksContainer = $('<div />').addClass('cross-links');
             __reference.$el.append(__reference.crossLinksContainer);
             __reference.viewCrossLinkMap = {};
             __reference.crossLinks = [];
-            _.each(__reference.views, function (view) {
-                var crossLinkId = 'bsliderCrossLink' + crossLinkCount++,
-                    crossLink = $('<div />').addClass('cross-link').attr('id', crossLinkId).addClass('unselected');
-                
-                crossLink.text(view.bsliderCrossLinkTitle ? view.bsliderCrossLinkTitle : 'View ' + crossLinkCount);
 
-                __reference.crossLinksContainer.append(crossLink);
-                __reference.crossLinks.push(crossLink);
-                _.extend(__reference.viewCrossLinkMap, _.object([crossLinkId], [view]));
-            });
+            _(__reference.views).each(createCrossLink);
 
             __reference.$('.cross-link').on('click', __reference.navigateTo);
 
+        }
+
+        function createCrossLink(view) {
+            var crossLinkId = 'bsliderCrossLink' + __reference.crossLinkCount++,
+                crossLink = $('<div />').addClass('cross-link').attr('id', crossLinkId).addClass('unselected');
+            
+            crossLink.text(view.bsliderCrossLinkTitle ? view.bsliderCrossLinkTitle : 'View ' + __reference.crossLinkCount);
+
+            __reference.crossLinksContainer.append(crossLink);
+            __reference.crossLinks.push(crossLink);
+            _.extend(__reference.viewCrossLinkMap, _.object([crossLinkId], [view]));
         }
         
         Slider.prototype.navigateTo = function(e) {
@@ -243,7 +255,7 @@
 
         function renderFirstView() {
             if (!__reference.views.length) {
-                throw new Error('Cannot render the slider. Need at least one view');
+                throwError('Cannot render the slider. Need at least one view');
             }
 
             __reference.currentView = 0;
