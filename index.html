@@ -51,7 +51,7 @@
 <h4>
 <a name="backboneslider" class="anchor" href="#backboneslider"><span class="octicon octicon-link"></span></a>Backbone.Slider</h4>
 
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">MySlider</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Slider</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">MySlider</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Slider</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
     <span class="nx">views</span><span class="o">:</span> <span class="p">[</span><span class="nx">myBackboneViewOne</span><span class="p">,</span> <span class="nx">myBackboneViewTwo</span><span class="p">]</span> 
 <span class="p">});</span> <span class="c1">//The Views should be rendered</span>
 
@@ -59,10 +59,10 @@
 </pre></div>
 
 <h4>
-<a name="addview--instanceaddview" class="anchor" href="#addview--instanceaddview"><span class="octicon octicon-link"></span></a>addView  <code>instance.addView</code>
+<a name="addviews--instanceaddviews" class="anchor" href="#addviews--instanceaddviews"><span class="octicon octicon-link"></span></a>addViews  <code>instance.addViews</code>
 </h4>
 
-<p>Add one more view, or an array of views to an instance of the slider.</p>
+<p>Add an array of views to an instance of the slider.</p>
 
 <h4>
 <a name="initial-view-to-be-rendered" class="anchor" href="#initial-view-to-be-rendered"><span class="octicon octicon-link"></span></a>Initial View To Be Rendered</h4>
@@ -71,7 +71,7 @@
 
 <p><em>Future versions will include selecting initial views by name, id, etc.</em></p>
 
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">MySlider</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Slider</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">MySlider</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Slider</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
     <span class="nx">initialViewToBeRendered</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="nx">views</span><span class="o">:</span> <span class="p">[</span><span class="nx">myBackboneViewOne</span><span class="p">,</span> <span class="nx">myBackboneViewTwo</span><span class="p">]</span> 
 <span class="p">});</span> <span class="c1">//Index starts at 0</span>
@@ -84,7 +84,7 @@
 
 <p>Cross-links can be enabled by passing in an option while extending.</p>
 
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">MySlider</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Slider</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">MySlider</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Slider</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
     <span class="nx">enableCrossLinks</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="nx">views</span><span class="o">:</span> <span class="p">[</span><span class="nx">myBackboneViewOne</span><span class="p">,</span> <span class="nx">myBackboneViewTwo</span><span class="p">]</span> 
 <span class="p">});</span> 
@@ -95,7 +95,7 @@
 
 <p>Cross-link titles can be specified as a property of the backbone view.</p>
 
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">MyBackboneView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span><span class="nx">bsliderCrossLinkTitle</span><span class="o">:</span> <span class="s1">'My View'</span><span class="p">}),</span>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">MyBackboneView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span><span class="nx">bsliderCrossLinkTitle</span><span class="o">:</span> <span class="s1">'My View'</span><span class="p">}),</span>
     <span class="nx">myBackboneViewOne</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyBackboneView</span><span class="p">();</span> <span class="c1">//View(s) should be rendered</span>
 
 <span class="kd">var</span> <span class="nx">MySlider</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Slider</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
@@ -109,7 +109,7 @@
 
 <p>Enable this option to cycle through views. </p>
 
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">MySlider</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Slider</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">MySlider</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Slider</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
     <span class="nx">cycleThrough</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="nx">views</span><span class="o">:</span> <span class="p">[</span><span class="nx">myBackboneViewOne</span><span class="p">,</span> <span class="nx">myBackboneViewTwo</span><span class="p">]</span> 
 <span class="p">});</span> 
@@ -120,7 +120,7 @@
 
 <p>If you want to control what happens before and/or after slide transitions, define preTransition, and/or postTransition functions while extending. </p>
 
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">MySlider</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Slider</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">MySlider</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Slider</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
     <span class="nx">preTransition</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="c1">//Do something },</span>
     <span class="nx">postTransition</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="c1">//Do something }</span>
 <span class="p">});</span> 
