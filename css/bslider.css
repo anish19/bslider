@@ -1,3 +1,12 @@
+.bslider .top-most {
+    z-index: 1000000;
+}
+
+.bslider .bottom-most {
+    position: absolute;
+    z-index: -1000000;
+}
+
 .bslider .bslider-nav-left a, .bslider .bslider-nav-right a {
     background: #000;
     color: #fff;

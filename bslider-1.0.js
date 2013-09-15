@@ -178,11 +178,18 @@
         };
 
         function renderNewAndRemoveOld (newView, oldView, slideDirection) {
+            var opposite = slideDirection === 'left' ? 'right' : 'left';
             $(newView.$el).css('display', 'none');
             $(newView.$el).insertAfter($(oldView.$el));
-            $(oldView.$el).remove();
+            $(newView.$el).addClass('top-most');
+            $(oldView.$el).addClass('bottom-most');
+            $(oldView.$el).hide('slide', {easing: 'easeInOutQuad', direction: opposite, queue: false}, 500, function () {
+                $(oldView.$el).removeClass('bottom-most');
+                $(oldView.$el).remove();
+            });
             __reference.currentView = _.indexOf(__reference.views, newView);
-            $(newView.$el).show('slide', {easing: 'easeInOutQuad', direction: slideDirection}, 500, function () {
+            $(newView.$el).show('slide', {easing: 'easeInOutQuad', direction: slideDirection, queue: false}, 500, function () {
+                $(newView.$el).removeClass('top-most');
                 __reference.currentIndex = _.indexOf(__reference.views, getCurrentView());
                 updateCrossLinks();
             });
