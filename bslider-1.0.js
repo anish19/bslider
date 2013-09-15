@@ -50,29 +50,53 @@
             __reference.views = __reference.views || [];
             __reference.crossLinkTitles = __reference.crossLinkTitles || {};
             __reference.cycleThrough = __reference.cycleThrough || false;
-            if (_.some(__reference.views, function (view) {
-                return !(view instanceof Backbone.View);
-            })) {
-                throw new Error('Cannot initialize slider. Nothing other than backbone views are supported for now');
+            __reference.preTransition = _.isFunction(__reference.preTransition) ? __reference.preTransition : function () {};
+            __reference.postTransition = _.isFunction(__reference.postTransition) ? __reference.postTransition : function () {};
+
+            if (_(__reference.views).some(isNotABackboneView)) {
+                throwError('Cannot initilize slider. Nothing other than backbone views are supported for now');
             }
+
             __reference.currentIndex = -1;
             __reference.currentView = -1;
             setupEventHandlers();
         };
 
-        Slider.prototype.addView = function(viewsToAdd) {
+        function isNotABackboneView(view) {
+            return !(view instanceof Backbone.View);
+        }
+
+        function throwError(message) {
+            throw new Error(message);
+        }
+
+        Slider.prototype.addViews = function(viewsToAdd) {
             if (!_.isArray(viewsToAdd) || !exists(viewsToAdd)) {
-                throw new Error('Error adding views ' + views);
+                throwError('Error adding views ' + viewsToAdd);
             }
-            _.each(viewsToAdd, function (view) {
-                if (!(view instanceof Backbone.View)) {
-                    throw new Error('One of the added views is not a backbone view');
-                }
-                __reference.views.push(view);
-            });
+            _(viewsToAdd).each(addView);
         };
 
+        function addView (view) {
+            if (!(view instanceof Backbone.View)) {
+                throwError('One of the added views is not a backbone view');
+            }
+            __reference.views.push(view);
+        }
+
         function setupEventHandlers () {
+            __reference.navigateLeft = _.wrap(__reference.navigateLeft, function(navLeft) {
+                __reference.preTransition(); 
+                navLeft(); 
+                __reference.postTransition();
+            });
+
+            __reference.navigateRight = _.wrap(__reference.navigateRight, function(navRight) {
+                __reference.preTransition(); 
+                navRight(); 
+                __reference.postTransition();
+            });
+
             __reference.$('.bslider-nav-left').on('click', __reference.navigateLeft);
             __reference.$('.bslider-nav-right').on('click', __reference.navigateRight);
         }
@@ -109,24 +133,27 @@
         };
 
         function createCrossLinks () {
-            var crossLinkCount = 0;
+            __reference.crossLinkCount = 0;
             __reference.crossLinksContainer = $('<div />').addClass('cross-links');
-            __reference.$el.append(__reference.crossLinksContainer),
-            __reference.viewCrossLinkMap = {},
+            __reference.$el.append(__reference.crossLinksContainer);
+            __reference.viewCrossLinkMap = {};
             __reference.crossLinks = [];
-            _.each(__reference.views, function (view) {
-                var crossLinkId = 'bsliderCrossLink' + crossLinkCount++,
-                    crossLink = $('<div />').addClass('cross-link').attr('id', crossLinkId).addClass('unselected');
-                
-                crossLink.text(view.bsliderCrossLinkTitle ? view.bsliderCrossLinkTitle : 'View ' + crossLinkCount);
 
-                __reference.crossLinksContainer.append(crossLink);
-                __reference.crossLinks.push(crossLink);
-                _.extend(__reference.viewCrossLinkMap, _.object([crossLinkId], [view]));
-            });
+            _(__reference.views).each(createCrossLink);
 
             __reference.$('.cross-link').on('click', __reference.navigateTo);
 
+        }
+
+        function createCrossLink(view) {
+            var crossLinkId = 'bsliderCrossLink' + __reference.crossLinkCount++,
+                crossLink = $('<div />').addClass('cross-link').attr('id', crossLinkId).addClass('unselected');
+            
+            crossLink.text(view.bsliderCrossLinkTitle ? view.bsliderCrossLinkTitle : 'View ' + __reference.crossLinkCount);
+
+            __reference.crossLinksContainer.append(crossLink);
+            __reference.crossLinks.push(crossLink);
+            _.extend(__reference.viewCrossLinkMap, _.object([crossLinkId], [view]));
         }
         
         Slider.prototype.navigateTo = function(e) {
@@ -151,11 +178,18 @@
         };
 
         function renderNewAndRemoveOld (newView, oldView, slideDirection) {
+            var opposite = slideDirection === 'left' ? 'right' : 'left';
             $(newView.$el).css('display', 'none');
             $(newView.$el).insertAfter($(oldView.$el));
-            $(oldView.$el).remove();
+            $(newView.$el).addClass('top-most');
+            $(oldView.$el).addClass('bottom-most');
+            $(oldView.$el).hide('slide', {easing: 'easeInOutQuad', direction: opposite, queue: false}, 500, function () {
+                $(oldView.$el).removeClass('bottom-most');
+                $(oldView.$el).remove();
+            });
             __reference.currentView = _.indexOf(__reference.views, newView);
-            $(newView.$el).show('slide', {easing: 'easeInOutQuad', direction: slideDirection}, 500, function () {
+            $(newView.$el).show('slide', {easing: 'easeInOutQuad', direction: slideDirection, queue: false}, 500, function () {
+                $(newView.$el).removeClass('top-most');
                 __reference.currentIndex = _.indexOf(__reference.views, getCurrentView());
                 updateCrossLinks();
             });
@@ -229,7 +263,7 @@
 
         function renderFirstView() {
             if (!__reference.views.length) {
-                throw new Error('Cannot render the slider. Need at least one view');
+                throwError('Cannot render the slider. Need at least one view');
             }
 
             __reference.currentView = 0;

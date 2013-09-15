@@ -20,7 +20,7 @@ test('slides cannot be anything other than backbone views', function () {
 
         throws(function () {
            var slider = new MyOtherSlider();
-           slider.addView([viewOne, viewTwo]);
+           slider.addViews([viewOne, viewTwo]);
         }, 'This should also raise an exception since viewTwo is not a backbone view');
 });
 
@@ -30,7 +30,7 @@ test('when two backbone views are given to the slider, and the slider is rendere
         MySlider = Backbone.Slider.extend({}),
         slider = new MySlider();
 
-        slider.addView([viewOne, viewTwo]);
+        slider.addViews([viewOne, viewTwo]);
         slider.render();
         equal(slider.$('.test-view').length, 1, 'Only one view should be visible');
         equal(slider.$('#one').length, 1, 'The first view should be visible');
@@ -56,7 +56,7 @@ test('initial view to be rendered can be an option', function () {
         }),
         slider = new MySlider();
 
-        slider.addView([viewOne, viewTwo]);
+        slider.addViews([viewOne, viewTwo]);
         slider.render();
 
         equal(slider.$('#one').length, 0, 'The first view should not be visible');
@@ -69,7 +69,7 @@ test('clicking the right arrow on the slider slides the view on the right in', f
         MySlider = Backbone.Slider.extend({}),
         slider = new MySlider();
 
-        slider.addView([viewOne, viewTwo]);
+        slider.addViews([viewOne, viewTwo]);
         slider.render();
 
         equal(slider.$('#two').length, 0, 'The second view should not be visible');
@@ -87,7 +87,7 @@ test('clicking the left arrow on the slider slides the view on the left in', fun
         }),
         slider = new MySlider();
 
-        slider.addView([viewOne, viewTwo]);
+        slider.addViews([viewOne, viewTwo]);
         slider.render();
 
         equal(slider.$('#two').length, 1, 'The second view should be visible');
@@ -104,7 +104,7 @@ test('when there are no other views on the left or right, the navs do not change
         MySlider = Backbone.Slider.extend({}),
         slider = new MySlider();
 
-        slider.addView([viewOne]);
+        slider.addViews([viewOne]);
         slider.render();
 
         equal(slider.$('#one').length, 1);
@@ -197,7 +197,7 @@ test('when cycleThrough is enabled, the slides can be cycled through', function 
         }),
         slider = new MySlider();
 
-        slider.addView([viewOne, viewTwo]);
+        slider.addViews([viewOne, viewTwo]);
         slider.render();
 
         slider.$('.bslider-nav-left').trigger('click'); 
@@ -209,4 +209,34 @@ test('when cycleThrough is enabled, the slides can be cycled through', function 
 
         equal(slider.$('#two').length, 0, 'The second view should not visible');
         equal(slider.$('#one').length, 1, 'The first view should be visible');
+});
+
+test('if pre or post transition functions have been provided, execute them', function () {
+    var viewOne = new Backbone.View({className: 'test-view', id: 'one'}),
+        viewTwo = new Backbone.View({className: 'test-view', id: 'two'}),
+        preTransitionStub = sinon.stub(),
+        postTransitionStub = sinon.stub(),
+        leftStub = sinon.stub(),
+        rightStub = sinon.stub(),
+        MySlider = Backbone.Slider.extend({
+            preTransition: preTransitionStub,
+            postTransition: postTransitionStub,
+            navigateLeft: leftStub,
+            navigateRight: rightStub,
+            views: [viewOne, viewTwo]
+        }),
+        slider = new MySlider();
+
+        slider.render();
+
+        slider.$('.bslider-nav-left').trigger('click'); 
+        ok(preTransitionStub.calledBefore(leftStub));
+        ok(leftStub.calledBefore(postTransitionStub));
+
+        slider.preTransition = preTransitionStub = sinon.stub();
+        slider.postTransition = postTransitionStub = sinon.stub();
+
+        slider.$('.bslider-nav-right').trigger('click'); 
+        ok(preTransitionStub.calledBefore(rightStub));
+        ok(rightStub.calledBefore(postTransitionStub));
 });
