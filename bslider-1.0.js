@@ -28,78 +28,73 @@
     Backbone.Slider = (function(_super) {
         __extend_parent__(Slider, _super);
 
-        var __reference;
-
         Slider.prototype.className = 'bslider';
 
         function Slider() {
-            __reference = this;
-
-            __reference.args = Array.prototype.slice.apply(arguments);
-            Backbone.View.prototype.constructor.apply(__reference, __reference.args);
-            Backbone.View.prototype.delegateEvents.apply(__reference, __reference.args);
-            __reference.initialize();
+            this.args = Array.prototype.slice.apply(arguments);
+            Backbone.View.prototype.constructor.apply(this, this.args);
+            Backbone.View.prototype.delegateEvents.apply(this, this.args);
+            this.initialize();
         }
 
-        Slider.prototype.events = {
-            'click .bslider-nav-left' : 'navigateLeft',
-            'click .bslider-nav-right' : 'navigateRight'
-        };
+//        Slider.prototype.events = {
+//            'click .bslider-nav-left' : 'navigateLeft',
+//            'click .bslider-nav-right' : 'navigateRight'
+//        };
 
         Slider.prototype.initialize = function () {
-            __reference.views = __reference.views || [];
-            __reference.crossLinkTitles = __reference.crossLinkTitles || {};
-            __reference.cycleThrough = __reference.cycleThrough || false;
-            __reference.preTransition = _.isFunction(__reference.preTransition) ? __reference.preTransition : function () {};
-            __reference.postTransition = _.isFunction(__reference.postTransition) ? __reference.postTransition : function () {};
+            this.views = this.views || [];
+            this.crossLinkTitles = this.crossLinkTitles || {};
+            this.cycleThrough = this.cycleThrough || false;
+            this.preTransition = _.isFunction(this.preTransition) ? this.preTransition : function () {};
+            this.postTransition = _.isFunction(this.postTransition) ? this.postTransition : function () {};
 
-            if (_(__reference.views).some(isNotABackboneView)) {
+            if (_(this.views).some(isNotABackboneView)) {
                 throwError('Cannot initilize slider. Nothing other than backbone views are supported for now');
             }
 
-            __reference.currentIndex = -1;
-            __reference.currentView = -1;
-            setupEventHandlers();
+            this.currentIndex = -1;
+            this.currentView = -1;
         };
 
-        function isNotABackboneView(view) {
+        function isNotABackboneView (view) {
             return !(view instanceof Backbone.View);
         }
 
-        function throwError(message) {
+        function throwError (message) {
             throw new Error(message);
         }
 
         Slider.prototype.addViews = function(viewsToAdd) {
+            var self = this;
             if (!_.isArray(viewsToAdd) || !exists(viewsToAdd)) {
                 throwError('Error adding views ' + viewsToAdd);
             }
-            _(viewsToAdd).each(addView);
+            _.each(viewsToAdd, function (view) {
+                if (!(view instanceof Backbone.View)) {
+                    throwError('One of the added views is not a backbone view');
+                }
+                self.views.push(view);
+            });
         };
 
-        function addView (view) {
-            if (!(view instanceof Backbone.View)) {
-                throwError('One of the added views is not a backbone view');
-            }
-            __reference.views.push(view);
-        }
-
-        function setupEventHandlers () {
-            __reference.navigateLeft = _.wrap(__reference.navigateLeft, function(navLeft) {
-                __reference.preTransition(); 
-                navLeft(); 
-                __reference.postTransition();
+        Slider.prototype.setupEventHandlers = function () {
+            var self = this;
+            this.navigateLeft = _.wrap(this.navigateLeft, function(navLeft) {
+                self.preTransition(); 
+                navLeft(self); 
+                self.postTransition();
             });
 
-            __reference.navigateRight = _.wrap(__reference.navigateRight, function(navRight) {
-                __reference.preTransition(); 
-                navRight(); 
-                __reference.postTransition();
+            this.navigateRight = _.wrap(this.navigateRight, function(navRight) {
+                self.preTransition(); 
+                navRight(self); 
+                self.postTransition();
             });
 
-            __reference.$('.bslider-nav-left').on('click', __reference.navigateLeft);
-            __reference.$('.bslider-nav-right').on('click', __reference.navigateRight);
-        }
+            this.$('.bslider-nav-left').on('click', this.navigateLeft);
+            this.$('.bslider-nav-right').on('click', this.navigateRight);
+        };
 
         Slider.prototype.render = function (options) {
             var navContainerLeft = $('<div />').addClass('bslider-nav-container-left');
@@ -109,76 +104,81 @@
                 options = {};
             }
 
-            __reference.sliderContainer = $('<div></div>').addClass('bslider-container');
-            __reference.navLeft = $('<i />').addClass('bslider-nav-left').addClass('icon-circle-arrow-left');
-            __reference.navRight = $('<i />').addClass('bslider-nav-right').addClass('icon-circle-arrow-right');
+            this.sliderContainer = $('<div></div>').addClass('bslider-container');
+            this.navLeft = $('<i />').addClass('bslider-nav-left').addClass('icon-circle-arrow-left');
+            this.navRight = $('<i />').addClass('bslider-nav-right').addClass('icon-circle-arrow-right');
 
-            __reference.$el.html(__reference.sliderContainer);
+            this.$el.html(this.sliderContainer);
 
-            __reference.$el.prepend(navContainerLeft.append(__reference.navLeft));
-            __reference.$el.append(navContainerRight.append(__reference.navRight));
+            this.$el.prepend(navContainerLeft.append(this.navLeft));
+            this.$el.append(navContainerRight.append(this.navRight));
 
-            if (__reference.enableCrossLinks) {
-                createCrossLinks();
+            if (this.enableCrossLinks) {
+                this.createCrossLinks();
             }
 
-            if (__reference.initialViewToBeRendered) {
-                renderViewAt(__reference.initialViewToBeRendered);
+            if (this.initialViewToBeRendered) {
+                this.renderViewAt(this.initialViewToBeRendered);
             } else {
-                renderFirstView();
+                this.renderFirstView();
             }
 
+            this.setupEventHandlers();
 
-            return __reference;
+
+            return this;
         };
 
-        function createCrossLinks () {
-            __reference.crossLinkCount = 0;
-            __reference.crossLinksContainer = $('<div />').addClass('cross-links');
-            __reference.$el.append(__reference.crossLinksContainer);
-            __reference.viewCrossLinkMap = {};
-            __reference.crossLinks = [];
+        Slider.prototype.createCrossLinks  = function () {
+            var self = this;
+            this.crossLinkCount = 0;
+            this.crossLinksContainer = $('<div />').addClass('cross-links');
+            this.$el.append(this.crossLinksContainer);
+            this.viewCrossLinkMap = {};
+            this.crossLinks = [];
 
-            _(__reference.views).each(createCrossLink);
+            _(this.views).each(this.createCrossLink, this);
 
-            __reference.$('.cross-link').on('click', __reference.navigateTo);
+            this.$('.cross-link').on('click', function (e) {
+                self.navigateTo(e);
+            });
+        };
 
-        }
-
-        function createCrossLink(view) {
-            var crossLinkId = 'bsliderCrossLink' + __reference.crossLinkCount++,
+        Slider.prototype.createCrossLink = function (view) {
+            var crossLinkId = 'bsliderCrossLink' + this.crossLinkCount++,
                 crossLink = $('<div />').addClass('cross-link').attr('id', crossLinkId).addClass('unselected');
             
-            crossLink.text(view.bsliderCrossLinkTitle ? view.bsliderCrossLinkTitle : 'View ' + __reference.crossLinkCount);
+            crossLink.text(view.bsliderCrossLinkTitle ? view.bsliderCrossLinkTitle : 'View ' + this.crossLinkCount);
 
-            __reference.crossLinksContainer.append(crossLink);
-            __reference.crossLinks.push(crossLink);
-            _.extend(__reference.viewCrossLinkMap, _.object([crossLinkId], [view]));
-        }
+            this.crossLinksContainer.append(crossLink);
+            this.crossLinks.push(crossLink);
+            _.extend(this.viewCrossLinkMap, _.object([crossLinkId], [view]));
+        };
         
         Slider.prototype.navigateTo = function(e) {
             var viewId = e.currentTarget.id,
-                viewToRender = _.result(__reference.viewCrossLinkMap, viewId);
+                viewToRender = _.result(this.viewCrossLinkMap, viewId);
 
 
             if (exists(viewToRender)) {
-                var viewToRemove = getCurrentView();
+                var viewToRemove = this.getCurrentView();
 
                 //Animate like nav left
-                if (__reference.views.indexOf(viewToRender) < __reference.views.indexOf(viewToRemove)) {
-                    renderNewAndRemoveOld(viewToRender, viewToRemove, 'left');
+                if (this.views.indexOf(viewToRender) < this.views.indexOf(viewToRemove)) {
+                    this.renderNewAndRemoveOld(viewToRender, viewToRemove, 'left');
                 }
 
                 //Animate like nav right
-                else if (__reference.views.indexOf(viewToRender) > __reference.views.indexOf(viewToRemove)) {
-                    renderNewAndRemoveOld(viewToRender, viewToRemove, 'right');
+                else if (this.views.indexOf(viewToRender) > this.views.indexOf(viewToRemove)) {
+                    this.renderNewAndRemoveOld(viewToRender, viewToRemove, 'right');
                 }
 
             }
         };
 
-        function renderNewAndRemoveOld (newView, oldView, slideDirection) {
-            var opposite = slideDirection === 'left' ? 'right' : 'left';
+        Slider.prototype.renderNewAndRemoveOld  = function (newView, oldView, slideDirection) {
+            var opposite = slideDirection === 'left' ? 'right' : 'left',
+                self = this;
             $(newView.$el).css('display', 'none');
             $(newView.$el).insertAfter($(oldView.$el));
             $(newView.$el).addClass('top-most');
@@ -187,18 +187,18 @@
                 $(oldView.$el).removeClass('bottom-most');
                 $(oldView.$el).remove();
             });
-            __reference.currentView = _.indexOf(__reference.views, newView);
+            this.currentView = _.indexOf(this.views, newView);
             $(newView.$el).show('slide', {easing: 'easeInOutQuad', direction: slideDirection, queue: false}, 500, function () {
                 $(newView.$el).removeClass('top-most');
-                __reference.currentIndex = _.indexOf(__reference.views, getCurrentView());
-                updateCrossLinks();
+                self.currentIndex = _.indexOf(self.views, self.getCurrentView());
+                self.updateCrossLinks(self);
             });
-        }
+        };
 
-        function updateCrossLinks() {
-            if (__reference.enableCrossLinks) {
-                var currentCrossLink = __reference.crossLinks[_.indexOf(__reference.views, getCurrentView())];
-                _.each(__reference.crossLinks, function (link) {
+        Slider.prototype.updateCrossLinks = function () {
+            if (this.enableCrossLinks) {
+                var currentCrossLink = this.crossLinks[_.indexOf(this.views, this.getCurrentView())];
+                _.each(this.crossLinks, function (link) {
                     if (link === currentCrossLink) {
                         link.addClass('selected').removeClass('unselected');
                     } else {
@@ -206,70 +206,70 @@
                     }
                 });
             }
-        }
+        };
 
-        Slider.prototype.navigateLeft = function () {
-            var viewToRender = getViewAt(--__reference.currentIndex);
+        Slider.prototype.navigateLeft = function (context) {
+            var viewToRender = context.getViewAt(--context.currentIndex);
             if (exists(viewToRender)) {
-                var viewToRemove = getCurrentView();
-                renderNewAndRemoveOld(viewToRender, viewToRemove, 'left');
+                var viewToRemove = context.getCurrentView();
+                context.renderNewAndRemoveOld(viewToRender, viewToRemove, 'left');
             }
         };
 
-        Slider.prototype.navigateRight = function () {
-            var viewToRender = getViewAt(++__reference.currentIndex);
+        Slider.prototype.navigateRight = function (context) {
+            var viewToRender = context.getViewAt(++context.currentIndex);
             if (exists(viewToRender)) {
-                var viewToRemove = getCurrentView();
-                renderNewAndRemoveOld(viewToRender, viewToRemove, 'right');
+                var viewToRemove = context.getCurrentView();
+                context.renderNewAndRemoveOld(viewToRender, viewToRemove, 'right');
             }
         };
 
-        function renderViewAt (index) {
-            var viewToBeRendered = getViewAt(index);
+        Slider.prototype.renderViewAt  = function (index) {
+            var viewToBeRendered = this.getViewAt(index);
             if (viewToBeRendered) {
-                __reference.currentView = index;
-                __reference.sliderContainer.append(viewToBeRendered.el);
-                updateCrossLinks();
+                this.currentView = index;
+                this.sliderContainer.append(viewToBeRendered.el);
+                this.updateCrossLinks(this);
             }
-        }
+        };
 
-        function getCurrentView() {
-            return __reference.views[__reference.currentView];
-        }
+        Slider.prototype.getCurrentView = function () {
+            return this.views[this.currentView];
+        };
 
-        function getViewAt (index) {
-            if (!__reference.views.length || (!__reference.cycleThrough && (index >= __reference.views.length || index < 0))) {
-                if (index >= __reference.views.length) {
-                    __reference.currentIndex = __reference.views.length - 1;
-                    __reference.currentView = __reference.currentIndex;
+        Slider.prototype.getViewAt  = function (index) {
+            if (!this.views.length || (!this.cycleThrough && (index >= this.views.length || index < 0))) {
+                if (index >= this.views.length) {
+                    this.currentIndex = this.views.length - 1;
+                    this.currentView = this.currentIndex;
                 } else if (index < 0){
-                    __reference.currentIndex = 0;
-                    __reference.currentView = __reference.currentIndex;
+                    this.currentIndex = 0;
+                    this.currentView = this.currentIndex;
                 }
                 return undefined;
             } else {
-                if (index >= __reference.views.length) {
-                    __reference.currentIndex = 0;
+                if (index >= this.views.length) {
+                    this.currentIndex = 0;
                 } else if (index < 0){
-                    __reference.currentIndex = __reference.views.length - 1;
+                    this.currentIndex = this.views.length - 1;
                 } else {
-                    __reference.currentIndex = index;
+                    this.currentIndex = index;
                 }
 
-                return __reference.views[__reference.currentIndex];
+                return this.views[this.currentIndex];
             }
 
-        }
+        };
 
-        function renderFirstView() {
-            if (!__reference.views.length) {
+        Slider.prototype.renderFirstView = function () {
+            if (!this.views.length) {
                 throwError('Cannot render the slider. Need at least one view');
             }
 
-            __reference.currentView = 0;
-            __reference.sliderContainer.append(getViewAt(0).el);
-            updateCrossLinks();
-        }
+            this.currentView = 0;
+            this.sliderContainer.append(this.getViewAt(0).el);
+            this.updateCrossLinks(this);
+        };
 
         function exists(value) {
             return value != null;
