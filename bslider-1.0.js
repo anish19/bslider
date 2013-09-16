@@ -37,17 +37,13 @@
             this.initialize();
         }
 
-//        Slider.prototype.events = {
-//            'click .bslider-nav-left' : 'navigateLeft',
-//            'click .bslider-nav-right' : 'navigateRight'
-//        };
-
         Slider.prototype.initialize = function () {
             this.views = this.views || [];
             this.crossLinkTitles = this.crossLinkTitles || {};
             this.cycleThrough = this.cycleThrough || false;
             this.preTransition = _.isFunction(this.preTransition) ? this.preTransition : function () {};
             this.postTransition = _.isFunction(this.postTransition) ? this.postTransition : function () {};
+            this.slideTransitionDuration = this.slideTransitionDuration || 500;
 
             if (_(this.views).some(isNotABackboneView)) {
                 throwError('Cannot initilize slider. Nothing other than backbone views are supported for now');
@@ -71,7 +67,7 @@
                 throwError('Error adding views ' + viewsToAdd);
             }
             _.each(viewsToAdd, function (view) {
-                if (!(view instanceof Backbone.View)) {
+                if (isNotABackboneView(view)) {
                     throwError('One of the added views is not a backbone view');
                 }
                 self.views.push(view);
@@ -183,12 +179,12 @@
             $(newView.$el).insertAfter($(oldView.$el));
             $(newView.$el).addClass('top-most');
             $(oldView.$el).addClass('bottom-most');
-            $(oldView.$el).hide('slide', {easing: 'easeInOutQuad', direction: opposite, queue: false}, 500, function () {
+            $(oldView.$el).hide('slide', {easing: 'easeInOutQuad', direction: opposite, queue: false}, this.slideTransitionDuration, function () {
                 $(oldView.$el).removeClass('bottom-most');
                 $(oldView.$el).remove();
             });
             this.currentView = _.indexOf(this.views, newView);
-            $(newView.$el).show('slide', {easing: 'easeInOutQuad', direction: slideDirection, queue: false}, 500, function () {
+            $(newView.$el).show('slide', {easing: 'easeInOutQuad', direction: slideDirection, queue: false}, this.slideTransitionDuration, function () {
                 $(newView.$el).removeClass('top-most');
                 self.currentIndex = _.indexOf(self.views, self.getCurrentView());
                 self.updateCrossLinks(self);
