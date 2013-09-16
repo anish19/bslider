@@ -187,7 +187,7 @@
             $(newView.$el).show('slide', {easing: 'easeInOutQuad', direction: slideDirection, queue: false}, this.slideTransitionDuration, function () {
                 $(newView.$el).removeClass('top-most');
                 self.currentIndex = _.indexOf(self.views, self.getCurrentView());
-                self.updateCrossLinks(self);
+                self.updateCrossLinks();
             });
         };
 
@@ -225,7 +225,7 @@
             if (viewToBeRendered) {
                 this.currentView = index;
                 this.sliderContainer.append(viewToBeRendered.el);
-                this.updateCrossLinks(this);
+                this.updateCrossLinks();
             }
         };
 
@@ -264,7 +264,7 @@
 
             this.currentView = 0;
             this.sliderContainer.append(this.getViewAt(0).el);
-            this.updateCrossLinks(this);
+            this.updateCrossLinks();
         };
 
         function exists(value) {
