@@ -28,6 +28,8 @@
     Backbone.Slider = (function(_super) {
         __extend_parent__(Slider, _super);
 
+        var throttleTime;
+
         Slider.prototype.className = 'bslider';
 
         function Slider() {
@@ -44,6 +46,7 @@
             this.preTransition = _.isFunction(this.preTransition) ? this.preTransition : function () {};
             this.postTransition = _.isFunction(this.postTransition) ? this.postTransition : function () {};
             this.slideTransitionDuration = this.slideTransitionDuration || 500;
+            throttleTime = this.slideTransitionDuration + 100;
 
             if (_(this.views).some(isNotABackboneView)) {
                 throwError('Cannot initilize slider. Nothing other than backbone views are supported for now');
@@ -76,17 +79,19 @@
 
         Slider.prototype.setupEventHandlers = function () {
             var self = this;
-            this.navigateLeft = _.wrap(this.navigateLeft, function(navLeft) {
-                self.preTransition(); 
-                navLeft(self); 
-                self.postTransition();
-            });
+            this.navigateLeft = _.throttle(
+                    _.wrap(this.navigateLeft, function(navLeft) {
+                        self.preTransition(); 
+                        navLeft(self); 
+                        self.postTransition();
+                    }), throttleTime);
 
-            this.navigateRight = _.wrap(this.navigateRight, function(navRight) {
-                self.preTransition(); 
-                navRight(self); 
-                self.postTransition();
-            });
+            this.navigateRight = _.throttle(
+                    _.wrap(this.navigateRight, function(navRight) {
+                        self.preTransition(); 
+                        navRight(self); 
+                        self.postTransition();
+                    }), throttleTime);
 
             this.$('.bslider-nav-left').on('click', this.navigateLeft);
             this.$('.bslider-nav-right').on('click', this.navigateRight);
