@@ -4,7 +4,6 @@ BSlider is a Backbone based slider. It is built on top of Backbone, and makes us
 
 Documentation available at http://karun012.github.io/bslider/
 
-_Note: This is a pre release. A minimized production version will be availabe on or before September 30th_
 
 ##Getting Started
 Refer to the documentation. It's got everything you need to get going. All you need to do is to extend Backbone.Slider, add
@@ -26,3 +25,5 @@ bear with me.
 ##Everything Else
 Questions, comments, ideas, etc. can be emailed directly to me. If you find an bug, please file it right here. If you 
 wish to fix something, or make something better, go ahead! I love refactoring.
+
+
